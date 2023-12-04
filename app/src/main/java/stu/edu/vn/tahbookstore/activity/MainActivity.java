@@ -3,6 +3,8 @@ package stu.edu.vn.tahbookstore.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -30,8 +32,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import stu.edu.vn.tahbookstore.R;
 import stu.edu.vn.tahbookstore.adapter.LoaiSachAdapter;
+import stu.edu.vn.tahbookstore.adapter.SachBanChayAdapter;
 import stu.edu.vn.tahbookstore.model.LoaiSach;
-import stu.edu.vn.tahbookstore.model.LoaiSachModel;
+import stu.edu.vn.tahbookstore.model.SachBanChay;
 import stu.edu.vn.tahbookstore.retrofix.APIBookStore;
 import stu.edu.vn.tahbookstore.retrofix.RetrofixClient;
 import stu.edu.vn.tahbookstore.utils.Utils;
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     List<LoaiSach> listLoaiSach;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     APIBookStore apiBookStore;
+    List<SachBanChay> arraySachBanChay;
+    SachBanChayAdapter sachBanChayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +66,33 @@ public class MainActivity extends AppCompatActivity {
 
             ActionViewFlipper();
             getLoaiSach();
+            sachBanChayAdapter = new SachBanChayAdapter(getApplicationContext(), new ArrayList<>());
+            recyclerView.setAdapter(sachBanChayAdapter);
+
+            getSachBanChay();
         }
         else{
             Toast.makeText(getApplicationContext(),"Không có kết nối internet, vui lòng thử kết nối lại !",Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getSachBanChay() {
+        compositeDisposable.add(apiBookStore.getSachBanChay()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        sachBanChayModel -> {
+                            if(sachBanChayModel.isSuccess()){
+                            arraySachBanChay = sachBanChayModel.getResult();
+                            sachBanChayAdapter = new SachBanChayAdapter(getApplicationContext(), arraySachBanChay);
+                            recyclerView.setAdapter(sachBanChayAdapter);
+                        }
+                        },
+                        throwable ->
+                        {
+                            Toast.makeText(getApplicationContext(),"Không có kết nối vào được sever"+ throwable.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                ));
     }
 
     private void getLoaiSach() {
@@ -119,9 +147,13 @@ public class MainActivity extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationview);
         listView = findViewById(R.id.lvDSSPManHinhChinh);
         recyclerView = findViewById(R.id.recyleview);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
         drawerLayout = findViewById(R.id.drawerLayout);
         //adapter
         listLoaiSach = new ArrayList<>();
+        arraySachBanChay = new ArrayList<>();
 
     }
     private boolean isConnected(Context context){

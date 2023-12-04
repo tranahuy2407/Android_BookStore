@@ -4,7 +4,8 @@ public class SachBanChay {
     String id;
     String ten;
     String hinhAnh;
-    String gia;
+    String giaGoc;
+    String giaGiam;
     String moTa;
     int loai;
 
@@ -23,7 +24,21 @@ public class SachBanChay {
     public void setTen(String ten) {
         this.ten = ten;
     }
+    public String getGiaGoc() {
+        return giaGoc;
+    }
 
+    public void setGiaGoc(String giaGoc) {
+        this.giaGoc = giaGoc;
+    }
+
+    public String getGiaGiam() {
+        return giaGiam;
+    }
+
+    public void setGiaGiam(String giaGiam) {
+        this.giaGiam = giaGiam;
+    }
     public String getHinhAnh() {
         return hinhAnh;
     }
@@ -31,15 +46,6 @@ public class SachBanChay {
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
-
-    public String getGia() {
-        return gia;
-    }
-
-    public void setGia(String gia) {
-        this.gia = gia;
-    }
-
     public String getMoTa() {
         return moTa;
     }
