@@ -3,17 +3,18 @@ package stu.edu.vn.tahbookstore.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
@@ -33,8 +34,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import stu.edu.vn.tahbookstore.R;
 import stu.edu.vn.tahbookstore.adapter.LoaiSachAdapter;
 import stu.edu.vn.tahbookstore.adapter.SachBanChayAdapter;
+import stu.edu.vn.tahbookstore.adapter.SachMoiAdapter;
 import stu.edu.vn.tahbookstore.model.LoaiSach;
 import stu.edu.vn.tahbookstore.model.SachBanChay;
+import stu.edu.vn.tahbookstore.model.SachMoi;
 import stu.edu.vn.tahbookstore.retrofix.APIBookStore;
 import stu.edu.vn.tahbookstore.retrofix.RetrofixClient;
 import stu.edu.vn.tahbookstore.utils.Utils;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ViewFlipper viewFlipper;
     NavigationView navigationView;
     ListView listView;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView,recyclerView1;
     DrawerLayout drawerLayout;
     LoaiSachAdapter loaiSachAdapter;
     List<LoaiSach> listLoaiSach;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     APIBookStore apiBookStore;
     List<SachBanChay> arraySachBanChay;
     SachBanChayAdapter sachBanChayAdapter;
+    List<SachMoi> arraySachMoi;
+    SachMoiAdapter sachMoiAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +66,62 @@ public class MainActivity extends AppCompatActivity {
         apiBookStore= RetrofixClient.getInstane(Utils.BASE_URL).create(APIBookStore.class);
         addControls();
         ActionBar();
-
         if(isConnected(this)){
-
             ActionViewFlipper();
             getLoaiSach();
-            sachBanChayAdapter = new SachBanChayAdapter(getApplicationContext(), new ArrayList<>());
-            recyclerView.setAdapter(sachBanChayAdapter);
-
             getSachBanChay();
+            getSachMoi();
+            getEventClick();
         }
         else{
             Toast.makeText(getApplicationContext(),"Không có kết nối internet, vui lòng thử kết nối lại !",Toast.LENGTH_LONG).show();
         }
     }
 
+    private void getEventClick() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent trangChu = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(trangChu);
+                        break;
+                    case 1:
+                        Intent sachBanChay = new Intent(getApplicationContext(), SachBanChayActivity.class);
+                        sachBanChay.putExtra("theloai",1);
+                        startActivity(sachBanChay);
+                        break;
+                    case 2:
+                        Intent sachMoi = new Intent(getApplicationContext(), SachMoiActivity.class);
+                        startActivity(sachMoi);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void getSachMoi() {
+        compositeDisposable.add(apiBookStore.getSachMoiAPI()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        sachMoiModel -> {
+                            if(sachMoiModel.isSuccess()){
+                                arraySachMoi = sachMoiModel.getResult();
+                                sachMoiAdapter = new SachMoiAdapter(getApplicationContext(), arraySachMoi);
+                                recyclerView1.setAdapter(sachMoiAdapter);
+                            }
+                        },
+                        throwable ->
+                        {
+                            Toast.makeText(getApplicationContext(),"Không có kết nối vào được sever"+ throwable.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                ));
+    }
+
     private void getSachBanChay() {
-        compositeDisposable.add(apiBookStore.getSachBanChay()
+        compositeDisposable.add(apiBookStore.getSachBanChayAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -146,10 +190,19 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper=findViewById(R.id.viewFlipper);
         navigationView=findViewById(R.id.navigationview);
         listView = findViewById(R.id.lvDSSPManHinhChinh);
+        //Sach ban chay
         recyclerView = findViewById(R.id.recyleview);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this,2);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(sachBanChayAdapter);
+        //SachMoi
+        recyclerView1 = findViewById(R.id.recyleview1);
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this);
+        ((LinearLayoutManager) layoutManager1).setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView1.setLayoutManager(layoutManager1);
+        recyclerView1.setHasFixedSize(true);
+        recyclerView1.setAdapter(sachMoiAdapter);
         drawerLayout = findViewById(R.id.drawerLayout);
         //adapter
         listLoaiSach = new ArrayList<>();

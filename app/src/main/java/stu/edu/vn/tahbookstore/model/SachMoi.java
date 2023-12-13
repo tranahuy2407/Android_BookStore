@@ -1,6 +1,6 @@
 package stu.edu.vn.tahbookstore.model;
 
-public class SachBanChay {
+public class SachMoi {
     int ID;
     String TENSACH;
     String GIAGOC;
@@ -57,6 +57,7 @@ public class SachBanChay {
     public void setHINHANH(String HINHANH) {
         this.HINHANH = HINHANH;
     }
+
     public int getTHELOAI() {
         return THELOAI;
     }

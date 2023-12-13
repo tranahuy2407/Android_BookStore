@@ -12,31 +12,31 @@ import com.bumptech.glide.Glide;
 import java.text.DecimalFormat;
 import java.util.List;
 import stu.edu.vn.tahbookstore.R;
-import stu.edu.vn.tahbookstore.model.SachBanChay;
+import stu.edu.vn.tahbookstore.model.SachMoi;
 
-public class SachBanChayAdapter extends RecyclerView.Adapter<SachBanChayAdapter.MyViewHolder> {
+public class SachMoiAdapter extends RecyclerView.Adapter<SachMoiAdapter.MyViewHolder> {
     Context context;
-    List<SachBanChay> array;
+    List<SachMoi> array;
 
-    public SachBanChayAdapter(Context context, List<SachBanChay> array) {
+    public SachMoiAdapter(Context context, List<SachMoi> array) {
         this.context = context;
         this.array = array;
     }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sach_ban_chay,parent,false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sach_moi,parent,false);
         return new MyViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        SachBanChay sachBanChay = array.get(position);
-        holder.txtTen.setText(sachBanChay.getTENSACH());
+        SachMoi sachMoi = array.get(position);
+        holder.txtTen.setText(sachMoi.getTENSACH());
         DecimalFormat decimalFormat = new DecimalFormat("##,###");
-        holder.txtGiaGoc.setText("Giá gốc: "+decimalFormat.format(Double.parseDouble(sachBanChay.getGIAGOC()))+"đ");
-        holder.txtGiaGiam.setText("Giá giảm: "+decimalFormat.format(Double.parseDouble(sachBanChay.getGIAGIAM()))+"đ");
-        Glide.with(context).load(sachBanChay.getHINHANH()).into(holder.imgHinhAnh);
+        holder.txtGiaGoc.setText("Giá gốc: "+decimalFormat.format(Double.parseDouble(sachMoi.getGIAGOC()))+"đ");
+        holder.txtGiaGiam.setText("Giá giảm: "+decimalFormat.format(Double.parseDouble(sachMoi.getGIAGIAM()))+"đ");
+        Glide.with(context).load(sachMoi.getHINHANH()).into(holder.imgHinhAnh);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class SachBanChayAdapter extends RecyclerView.Adapter<SachBanChayAdapter.
         ImageView imgHinhAnh;
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
-            txtTen = itemView.findViewById(R.id.itemsach_ten);
-            txtGiaGoc= itemView.findViewById(R.id.itemsach_giagoc);
-            txtGiaGiam = itemView.findViewById(R.id.itemsach_giagiam);
-            imgHinhAnh = itemView.findViewById(R.id.itemsach_img);
+            txtTen = itemView.findViewById(R.id.itemsachmoi_ten);
+            txtGiaGoc= itemView.findViewById(R.id.itemsachmoi_giagoc);
+            txtGiaGiam = itemView.findViewById(R.id.itemsachmoi_giagiam);
+            imgHinhAnh = itemView.findViewById(R.id.itemsachmoi_img);
         }
     }
 
