@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TAHBookStore</string>
+    <string name="gi_gi_m_119000">Giá giảm:119000 Đ</string>
+    <string name="gi_g_c_150000">Giá gốc: 150000 Đ</string>
+    <string name="th_m_v_o_gi_h_ng">Thêm vào giỏ hàng</string>
 </resources>

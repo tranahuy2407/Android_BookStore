@@ -89,11 +89,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         Intent sachBanChay = new Intent(getApplicationContext(), SachBanChayActivity.class);
-                        sachBanChay.putExtra("theloai",1);
+                        sachBanChay.putExtra("theloai",2);
                         startActivity(sachBanChay);
                         break;
                     case 2:
-                        Intent sachMoi = new Intent(getApplicationContext(), SachMoiActivity.class);
+                        Intent sachMoi = new Intent(getApplicationContext(), SachBanChayActivity.class);
+                        sachMoi.putExtra("theloai",3);
                         startActivity(sachMoi);
                         break;
                 }

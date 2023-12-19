@@ -94,10 +94,10 @@ public class SachBanChayActivity extends AppCompatActivity {
         compositeDisposable.add(apiBookStore.getSachBanChayToolBar(page,theloai)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
+                .subscribe( 
                         sachBanChayModel -> {
                             if(sachBanChayModel.isSuccess()){
-                                if(sbcToolbarAdapter==null){
+                                if(sbcToolbarAdapter == null){
                                     sachBanChayList = sachBanChayModel.getResult();
                                     sbcToolbarAdapter = new SachBanChayToolbar(getApplicationContext(),sachBanChayList);
                                     recyclerView.setAdapter(sbcToolbarAdapter);
@@ -112,6 +112,7 @@ public class SachBanChayActivity extends AppCompatActivity {
 
                             }else{
                                 Toast.makeText(getApplicationContext(), "Hết dữ liệu sách rồi",Toast.LENGTH_LONG).show();
+                                isLoading = true;
                             }
                         },
                        throwable -> {

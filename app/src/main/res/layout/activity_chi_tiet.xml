@@ -5,5 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ChiTietActivity">
-
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toobar"
+        app:title="Chi tiết sản phẩm"
+        android:background="#007317"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toobar"
+        android:orientation="vertical"
+        android:background="#E3F0EF">
+        <ImageView
+            android:id="@+id/imgchitiet"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/best_seller_icon"/>
+        <TextView
+            android:id="@+id/txttensp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên sách"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/txttacgia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tác giả"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout1">
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+        </TextView>
+        <TextView
+            android:id="@+id/txtgiagocsp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gi_g_c_150000"
+            android:textSize="20sp">
+        </TextView>
+        <TextView
+            android:id="@+id/txtgiagiamsp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gi_gi_m_119000"
+            android:textSize="20sp"
+            android:textColor="#FF0000">
+        </TextView>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnthemvaogiohang"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#989658"
+            android:text="@string/th_m_v_o_gi_h_ng"
+            android:textSize="25sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout2">
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thông tin kèm theo"
+        android:textSize="20sp">
+    </TextView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txtmotachitiet"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp">
+            </TextView>
+        </ScrollView>
+</LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

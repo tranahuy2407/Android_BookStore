@@ -24,6 +24,7 @@ public interface APIBookStore
     @FormUrlEncoded
     Observable<SachBanChayModel> getSachBanChayToolBar(
             @Field("page") int page,
-            @Field("theloai") int theloai
+            @Field("THELOAI") int theloai
     );
+
 }

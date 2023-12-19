@@ -1,6 +1,8 @@
 package stu.edu.vn.tahbookstore.model;
 
-public class SachBanChay {
+import java.io.Serializable;
+
+public class SachBanChay implements Serializable {
     int ID;
     String TENSACH;
     String GIAGOC;

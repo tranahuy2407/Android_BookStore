@@ -52,16 +52,17 @@ public class SachBanChayToolbar extends RecyclerView.Adapter<RecyclerView.ViewHo
             MyViewHolder myViewHolder =(MyViewHolder) holder;
             SachBanChay sachBanChay = array.get(position);
             myViewHolder.ten.setText(sachBanChay.getTENSACH());
-            myViewHolder.idsach.setText(sachBanChay.getID()+ "");
             DecimalFormat decimalFormat = new DecimalFormat("##,###");
             myViewHolder.giaGoc.setText("Giá gốc"+ decimalFormat.format(Double.parseDouble(sachBanChay.getGIAGOC()))+ "Đ");
             myViewHolder.giaGiam.setText("Giá giảm"+ decimalFormat.format(Double.parseDouble(sachBanChay.getGIAGIAM()))+ "Đ");
+            myViewHolder.idsach.setText(sachBanChay.getID()+ "");
             Glide.with(context).load(sachBanChay.getHINHANH()).into(myViewHolder.hinhAnh);
             myViewHolder.setItemClickLitener(new ItemClickLitener() {
                 @Override
                 public void onClick(View view, int pos, boolean isLongClick) {
                     if(!isLongClick){
                         Intent intent = new Intent(context, ChiTietActivity.class);
+                        intent.putExtra("chitiet", sachBanChay);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
