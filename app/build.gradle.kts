@@ -52,6 +52,6 @@ dependencies {
     implementation ("org.greenrobot:eventbus:3.2.0")
     //paper
     implementation ("io.github.pilgr:paperdb:2.7.2")
-
-
+    //Gson
+    implementation ("com.google.code.gson:gson:2.8.9")
 }

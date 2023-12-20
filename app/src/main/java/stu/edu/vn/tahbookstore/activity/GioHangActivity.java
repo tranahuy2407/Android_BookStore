@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ Toolbar toolbar;
 RecyclerView recyclerView;
 Button btnMuaHang;
 GioHangAdapter gioHangAdapter;
+long tongTien =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ GioHangAdapter gioHangAdapter;
     }
 
     private void totalPrice() {
-        long tongTien =0;
+        tongTien =0;
         for(int i = 0; i<Utils.manggiohang.size(); i++){
             tongTien = tongTien + Utils.manggiohang.get(i).getGiasp()* Utils.manggiohang.get(i).getSoluong();
         }
@@ -64,6 +66,14 @@ GioHangAdapter gioHangAdapter;
             gioHangAdapter = new GioHangAdapter(getApplicationContext(), Utils.manggiohang);
             recyclerView.setAdapter(gioHangAdapter);
         }
+        btnMuaHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ThanhToanActivity.class);
+                intent.putExtra("tongtien",tongTien);
+                startActivity(intent);
+            }
+        });
 
     }
 
