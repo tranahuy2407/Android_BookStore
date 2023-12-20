@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,7 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +36,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import stu.edu.vn.tahbookstore.R;
 import stu.edu.vn.tahbookstore.adapter.LoaiSachAdapter;
 import stu.edu.vn.tahbookstore.adapter.SachBanChayAdapter;
-import stu.edu.vn.tahbookstore.adapter.SachMoiAdapter;
 import stu.edu.vn.tahbookstore.model.LoaiSach;
 import stu.edu.vn.tahbookstore.model.SachBanChay;
-import stu.edu.vn.tahbookstore.model.SachMoi;
 import stu.edu.vn.tahbookstore.retrofix.APIBookStore;
 import stu.edu.vn.tahbookstore.retrofix.RetrofixClient;
 import stu.edu.vn.tahbookstore.utils.Utils;
@@ -56,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
     APIBookStore apiBookStore;
     List<SachBanChay> arraySachBanChay;
     SachBanChayAdapter sachBanChayAdapter;
-    List<SachMoi> arraySachMoi;
-    SachMoiAdapter sachMoiAdapter;
-
+    NotificationBadge badge;
+    FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,15 +102,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getSachMoi() {
-        compositeDisposable.add(apiBookStore.getSachMoiAPI()
+        compositeDisposable.add(apiBookStore.getSachBanChayAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        sachMoiModel -> {
-                            if(sachMoiModel.isSuccess()){
-                                arraySachMoi = sachMoiModel.getResult();
-                                sachMoiAdapter = new SachMoiAdapter(getApplicationContext(), arraySachMoi);
-                                recyclerView1.setAdapter(sachMoiAdapter);
+                        sachBanChayModel ->{
+                            if(sachBanChayModel.isSuccess()){
+                                arraySachBanChay = sachBanChayModel.getResult();
+                                sachBanChayAdapter = new SachBanChayAdapter(getApplicationContext(), arraySachBanChay);
+                                recyclerView1.setAdapter(sachBanChayAdapter);
                             }
                         },
                         throwable ->
@@ -203,13 +202,42 @@ public class MainActivity extends AppCompatActivity {
         ((LinearLayoutManager) layoutManager1).setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView1.setLayoutManager(layoutManager1);
         recyclerView1.setHasFixedSize(true);
-        recyclerView1.setAdapter(sachMoiAdapter);
+        recyclerView1.setAdapter(sachBanChayAdapter);
         drawerLayout = findViewById(R.id.drawerLayout);
+        badge = findViewById(R.id.menu_sl);
+        frameLayout = findViewById(R.id.framegiohang);
         //adapter
         listLoaiSach = new ArrayList<>();
         arraySachBanChay = new ArrayList<>();
+        if(Utils.manggiohang == null){
+            Utils.manggiohang = new ArrayList<>();
+        }else{
+            int totalItem = 0;
+            for (int i = 0; i<Utils.manggiohang.size(); i++){
+                totalItem = totalItem+ Utils.manggiohang.get(i).getSoluong();
+            }
+            badge.setText(String.valueOf(totalItem));
+        }
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gioHang = new Intent(getApplicationContext(),GioHangActivity.class);
+                startActivity(gioHang);
+            }
+        });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int totalItem = 0;
+        for (int i = 0; i<Utils.manggiohang.size(); i++){
+            totalItem = totalItem+ Utils.manggiohang.get(i).getSoluong();
+        }
+        badge.setText(String.valueOf(totalItem));
+    }
+
     private boolean isConnected(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);

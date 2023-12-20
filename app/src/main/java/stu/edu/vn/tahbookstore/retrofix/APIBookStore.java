@@ -6,9 +6,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import stu.edu.vn.tahbookstore.model.LoaiSachModel;
-import stu.edu.vn.tahbookstore.model.SachBanChay;
 import stu.edu.vn.tahbookstore.model.SachBanChayModel;
-import stu.edu.vn.tahbookstore.model.SachMoiModel;
 
 public interface APIBookStore
 {
@@ -17,9 +15,6 @@ public interface APIBookStore
 
     @GET("getsachbanchay.php")
     Observable<SachBanChayModel> getSachBanChayAPI();
-
-    @GET("getsachmoi.php")
-    Observable<SachMoiModel> getSachMoiAPI();
     @POST("chitiet.php")
     @FormUrlEncoded
     Observable<SachBanChayModel> getSachBanChayToolBar(
